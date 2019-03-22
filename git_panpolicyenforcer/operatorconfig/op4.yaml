@@ -1,0 +1,54 @@
+# handler for adapter mygrpcadapter
+apiVersion: "config.istio.io/v1alpha2"
+kind: handler
+metadata:
+ name: h1
+ namespace: istio-system
+spec:
+ adapter: panpolicyenforcer 
+ connection:
+   address: "panpolicyenforcer:9693"
+   #address: "mygrpcadapterservice:44225"
+   #address: "35.184.34.117:44225"
+---
+apiVersion: "config.istio.io/v1alpha2"
+kind: instance
+metadata:
+ name: icheck
+ namespace: istio-system
+spec:
+ template: authorization
+ params:
+   subject:
+     user: source.principal | request.auth.principal | "" 
+     groups: request.auth.principal | ""
+     properties:
+      source_namespace: source.workload.namespace | "unknown_namespace"
+      source_service: source.workload.name | "unknown_service"
+   action:
+     namespace: destination.namespace | ""
+     service: destination.service.name | "" 
+     method: destination.principal | ""
+     path: request.path | ""
+     properties: 
+      custom_header: source.user | "hello"
+      protocol: context.protocol | "unknown_protocol"
+---
+
+# rule to dispatch to handler h1
+apiVersion: "config.istio.io/v1alpha2"
+kind: rule
+metadata:
+ name: r1
+ namespace: istio-system
+spec:
+ #match: destination.service.startsWith("product") || destination.service.startsWith("ratings") || destination.service.startsWith("reviews") || destination.service.startsWith("details")
+ #match: source.namespace == "default" && destination.namespace == "default" 
+ #match: match(destination.service.host, "ratings.*") 
+ #match: "true"
+ match: destination.service.name != "istio-ingressgateway" && source.workload.name != "istio-ingressgateway"
+ actions:
+ - handler: h1.istio-system
+   instances:
+   - icheck
+---

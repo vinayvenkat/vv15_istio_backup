@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: panpolicyenforcer 
+  namespace: istio-system
+  labels:
+    app: panpolicyenforcer 
+spec:
+  type: ClusterIP
+  ports:
+  - name: grpc
+    protocol: TCP
+    port: 9693 
+    targetPort: 9693 
+  selector:
+    app: panpolicyenforcer 
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: panpolicyenforcer 
+  namespace: istio-system
+  labels:
+    app: panpolicyenforcer 
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: panpolicyenforcer 
+      annotations:
+        sidecar.istio.io/inject: "false"
+        scheduler.alpha.kubernetes.io/critical-pod: ""
+    spec:
+      containers:
+      - name: panpolicyenforcer 
+        image: vinayvenkat/panpolicyenforcer:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9693 
+        volumeMounts:
+        - name: transient-storage
+          mountPath: /volume
+        env:
+        - name: SECURITY_POLICY_API_ENDPOINT
+          value: "http://10.28.3.59:9080" 
+      volumes:
+      - name: transient-storage
+        emptyDir: {}

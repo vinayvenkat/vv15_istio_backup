@@ -1,0 +1,49 @@
+# handler for adapter mygrpcadapter
+apiVersion: "config.istio.io/v1alpha2"
+kind: handler
+metadata:
+ name: h1
+ namespace: istio-system
+spec:
+ adapter: panpolicyenforcer 
+ connection:
+   address: "[::]:34885"
+   #address: "mygrpcadapterservice:44225"
+   #address: "35.184.34.117:44225"
+---
+apiVersion: "config.istio.io/v1alpha2"
+kind: instance
+metadata:
+ name: icheck
+ namespace: istio-system
+spec:
+ template: authorization
+ params:
+   subject:
+     user: source.user | request.auth.principal | "" 
+     groups: request.auth.principal | ""
+     properties:
+      source_namespace: source.namespace | "unknown_namespace"
+      source_service: source.service | "unknown_service"
+   action:
+     namespace: destination.namespace | ""
+     service: destination.service | "" 
+     method: request.method | ""
+     path: request.path | ""
+     properties: 
+      custom_header: source.user | "hello"
+      protocol: api.protocol | "unknown_protocol"
+---
+
+# rule to dispatch to handler h1
+apiVersion: "config.istio.io/v1alpha2"
+kind: rule
+metadata:
+ name: r1
+ namespace: istio-system
+spec:
+ actions:
+ - handler: h1.istio-system
+   instances:
+   - icheck
+---
