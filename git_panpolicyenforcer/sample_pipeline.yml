@@ -35,12 +35,10 @@ steps:
 # path
 
 - script: |
- 
-  sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli
-  sudo chmod +x /usr/bin/twistcli 
+
+    sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli
 
 # Use a script step to pull twistcli and scan the image that was built
-
 - script: |
    
    # Using our credentials, download twistcli from Console and make it executable
