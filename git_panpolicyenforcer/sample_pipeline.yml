@@ -38,6 +38,9 @@ steps:
 
     sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli
 
+- script: |
+    echo ls /usr/bin
+
 # Use a script step to pull twistcli and scan the image that was built
 - script: |
    
