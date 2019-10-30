@@ -51,7 +51,7 @@ steps:
    # -address points to our Twistlock console
    # -u and -p provide credentials for the console.  These creds only need the CI User role.
    # Finally, we provide the name of the image we built with 'docker build', above.
-   ./twistcli images scan --details -address $TL_CONSOLE_URL -u $TL_USER -p $TL_PASS $(Build.Repository.Name):$(Build.BuildId)
+   /usr/bin/twistcli images scan --details -address $TL_CONSOLE_URL -u $TL_USER -p $TL_PASS $(Build.Repository.Name):$(Build.BuildId)
    
    # Add --vulnerability-threshold and/or --compliance-threshold to this command to
    # fail builds based on the thresholds.
