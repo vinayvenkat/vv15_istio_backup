@@ -42,8 +42,8 @@ steps:
 - script: |
    
    # Using our credentials, download twistcli from Console and make it executable
-   curl -k -u $TL_USER:$TL_PASS --output ./twistcli $TL_CONSOLE_URL/api/v1/util/twistcli
-   sudo chmod a+x ./twistcli
+   curl -k -u $TL_USER:$TL_PASS --output /usr/bin/twistcli $TL_CONSOLE_URL/api/v1/util/twistcli
+   sudo chmod a+x /usr/bin/twistcli
    
    # Run the scan with twistcli, providing detailed results in Azure DevOps and
    # pushing the results to the Twistlock console.
