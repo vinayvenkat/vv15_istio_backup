@@ -22,6 +22,23 @@ steps:
 
     dockerRegistryConnection: dockerhub
 
+- task: UniversalPackages@0
+  displayName: 'Universal download'
+  inputs:
+    command: download
+    vstsFeed: 'vv15_tw'
+    vstsFeedPackage: 'twistcli_pkg'
+    vstsPackageVersion: 19.7.363
+    downloadDirectory: '$(System.DefaultWorkingDirectory)'
+
+# Use a script to copy the twistcli binary into the required
+# path
+
+- script: |
+ 
+  sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli
+  sudo chmod +x /usr/bin/twistcli 
+
 # Use a script step to pull twistcli and scan the image that was built
 
 - script: |
