@@ -40,6 +40,7 @@ steps:
 
 - script: |
     echo $(ls /usr/bin)
+    /usr/bin/twistcli --help
 
 # Use a script step to pull twistcli and scan the image that was built
 - script: |
