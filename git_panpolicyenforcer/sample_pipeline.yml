@@ -74,4 +74,7 @@ steps:
 - task: Docker@0
   displayName: 'Push an image'
   inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryConnection: 'dockerhub'
     action: 'Push an image'
+    imageName: '$(Build.Repository.Name):$(Build.BuildId)'
