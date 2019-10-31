@@ -37,9 +37,10 @@ steps:
 - script: |
 
     sudo mv $(System.DefaultWorkingDirectory)/twistcli /usr/bin/twistcli
+    sudo chmod a+x /usr/bin/twistcli
 
 - script: |
-    echo $(ls /usr/bin/twistcli)
+    echo $(ls -l /usr/bin/twistcli)
 
 - script: |
     /usr/bin/twistcli --help
@@ -49,7 +50,7 @@ steps:
    
    # Using our credentials, download twistcli from Console and make it executable
    curl -k -u $TL_USER:$TL_PASS --output /usr/bin/twistcli $TL_CONSOLE_URL/api/v1/util/twistcli
-   sudo chmod a+x /usr/bin/twistcli
+   
    
    
    # Run the scan with twistcli, providing detailed results in Azure DevOps and
