@@ -49,7 +49,7 @@ steps:
 - script: |
    
    # Using our credentials, download twistcli from Console and make it executable
-   curl -k -u $TL_USER:$TL_PASS --output /usr/bin/twistcli $TL_CONSOLE_URL/api/v1/util/twistcli
+   curl -k -u $TL_USERS:$TL_PASSS --output /usr/bin/twistcli $TL_CONSOLE_URL/api/v1/util/twistcli
    
    
    
